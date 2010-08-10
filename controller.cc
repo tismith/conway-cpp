@@ -16,5 +16,4 @@ void const Controller::print(void) {
 }
 
 Controller::~Controller() {
-       cout << "Destructor called" << endl; 
 }

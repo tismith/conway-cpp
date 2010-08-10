@@ -2,7 +2,10 @@ using namespace std;
 #include <iostream>
 #include <sstream>
 #include <cstdlib>
+
+extern "C" {
 #include <unistd.h>
+}
 
 #include "controller.h"
 

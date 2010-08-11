@@ -24,17 +24,26 @@ class Controller {
         const int get_height(void) const;
         Cell& element(int x, int y);
         const Cell& element(int x, int y) const;
+        Cell& element_next(int x, int y);
+        const Cell& element_next(int x, int y) const;
 
         void const print(void) const;
         void const print_dimensions(void) const;
 
+        void init(void);
+        void tick(void);
+        void run(void);
+
     private:
         typedef std::vector<Cell> Container;
-        typedef auto_ptr<Container> Container_ptr;
+        typedef std::tr1::shared_ptr<Container> Container_ptr;
         int m_width;
         int m_height;
-        int max_element;
         Container_ptr m_elements;
+        Container_ptr m_elements_alt;
+        int const neighbours_alive(int x, int y) const;
+        const bool apply(const Cell& cell, const int num_alive) const;
+        
         Controller();
 };
 

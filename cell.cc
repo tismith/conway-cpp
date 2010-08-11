@@ -26,11 +26,11 @@ Cell& Cell::operator=(const bool& value) {
     this->value() = value;
 }
 
-bool Cell::operator==(const Cell& cell) {
+bool Cell::operator==(const Cell& cell) const {
     return this->value() == cell.value();
 }
 
-bool Cell::operator==(const bool& value) {
+bool Cell::operator==(const bool& value) const {
     return this->value() == value;
 }
 

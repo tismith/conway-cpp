@@ -10,8 +10,8 @@ class Cell {
         ~Cell();
         Cell& operator=(const Cell& cell);
         Cell& operator=(const bool& value);
-        bool operator==(const Cell& cell);
-        bool operator==(const bool& value);
+        bool operator==(const Cell& cell) const;
+        bool operator==(const bool& value) const;
         const bool& value() const; 
         bool& value();
 

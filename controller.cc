@@ -19,9 +19,7 @@ Controller::Controller(const int width, const int height)
     m_width = width;
     m_height = height;
     m_elements = Container_ptr(new Container(width*height, false));
-
-    element(0,0) = true;
-    std::cout << "Element 0,0 is " << element(0,0) << std::endl;
+    m_elements_alt = Container_ptr(new Container(width*height, false));
 }
 
 const int Controller::get_width(void) const {
@@ -33,11 +31,13 @@ const int Controller::get_height(void) const {
 }
 
 void const Controller::print(void) const {
-    for (int i = 0; i < m_elements->size(); i++) {
-        //cout << "(" << (i % get_width()) << "," << (i / get_height()) << ") ";
-        cout << element(i % get_width(), i / get_width()) << " ";
-        if ((i+1) % m_width == 0) cout << endl;
+    for (int y = 0; y < get_height(); y++) {
+        for (int x = 0; x < get_width(); x++) {
+            cout << element(x,y) << " ";
+        }
+        cout << endl;
     }
+    cout << endl;
 }
 
 void const Controller::print_dimensions(void) const {
@@ -45,16 +45,80 @@ void const Controller::print_dimensions(void) const {
     cout << "Height is " << get_height() << endl;
 }
 
+/* reader */
 const Cell& Controller::element(int x, int y) const {
-    int wrapped_x = x % get_width();
-    int wrapped_y = y % get_height();
+    /* to get the modulus wrapping from -ve to +ve correctly
+     * x%m is in [-m+1, m-1], so adding m to it won't change it's 
+     * modulo, but will make it guaranteed +ve */
+    int wrapped_x = (x % get_width() + get_width()) % get_width();
+    int wrapped_y = (y % get_height() + get_height()) % get_height();
     return m_elements->at(wrapped_x + (wrapped_y * get_width()));
 }
 
+/* writer */
 Cell& Controller::element(int x, int y) {
-    int wrapped_x = x % get_width();
-    int wrapped_y = y % get_height();
+    int wrapped_x = (x % get_width() + get_width()) % get_width();
+    int wrapped_y = (y % get_height() + get_height()) % get_height();
     return m_elements->at(wrapped_x + (wrapped_y * get_width()));
+}
+
+const Cell& Controller::element_next(int x, int y) const {
+    /* to get the modulus wrapping from -ve to +ve correctly
+     * x%m is in [-m+1, m-1], so adding m to it won't change it's 
+     * modulo, but will make it guaranteed +ve */
+    int wrapped_x = (x % get_width() + get_width()) % get_width();
+    int wrapped_y = (y % get_height() + get_height()) % get_height();
+    return m_elements_alt->at(wrapped_x + (wrapped_y * get_width()));
+}
+
+/* writer */
+Cell& Controller::element_next(int x, int y) {
+    int wrapped_x = (x % get_width() + get_width()) % get_width();
+    int wrapped_y = (y % get_height() + get_height()) % get_height();
+    return m_elements_alt->at(wrapped_x + (wrapped_y * get_width()));
+}
+
+void Controller::init(void) {
+    swap(m_elements_alt, m_elements);
+}
+
+void Controller::tick(void) {
+    for (int x = 0; x < get_width(); x++) {
+        for (int y = 0; y < get_height(); y++) {
+            element_next(x,y) = apply(element(x,y), neighbours_alive(x,y));
+        }
+    }
+    swap(m_elements_alt, m_elements);
+}
+
+void Controller::run(void) {
+    while (true) {
+        tick();
+        print();
+    }
+}
+
+const bool Controller::apply(const Cell& cell, const int num_alive) const {
+    if (num_alive < 2) return false;
+    if (num_alive == 2) return cell.value();
+    if (num_alive == 3) return true;
+    if (num_alive > 3) return false;
+    return false;
+}
+
+int const Controller::neighbours_alive(int x, int y) const {
+    int count = 0;
+    bool debug = false;
+
+    for (int j = y-1; j <= y+1; j++) {
+        for (int i = x-1; i <= x+1; i++) {
+            if (debug) cout << "(" << i << "," << j << ") = " << element(i, j).value() << endl ; 
+            if (!(i == x && j == y)) {
+                if (element(i, j) == true) count++;
+            }
+        }
+    }
+    return count;
 }
 
 Controller::~Controller() {

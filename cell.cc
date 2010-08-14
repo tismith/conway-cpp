@@ -49,5 +49,5 @@ const bool& Cell::value(void) const {
 }
 
 bool& Cell::value(void) {
-    return this->m_value;
+    return const_cast<bool&>(static_cast<const Cell&>(*this).value());
 }

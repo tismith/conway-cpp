@@ -46,40 +46,31 @@ void const Controller::print_dimensions(void) const {
 }
 
 /* reader */
-const Cell& Controller::element(int x, int y) const {
+/* primary_table is an optional argument that defaults to true */
+const Cell& Controller::element(int x, int y, bool primary_table) const {
     /* to get the modulus wrapping from -ve to +ve correctly
      * x%m is in [-m+1, m-1], so adding m to it won't change it's 
      * modulo, but will make it guaranteed +ve */
     int wrapped_x = (x % get_width() + get_width()) % get_width();
     int wrapped_y = (y % get_height() + get_height()) % get_height();
-    return m_elements->at(wrapped_x + (wrapped_y * get_width()));
+    if (primary_table) {
+        return m_elements->at(wrapped_x + (wrapped_y * get_width()));
+    } else {
+        return m_elements_alt->at(wrapped_x + (wrapped_y * get_width()));
+    }
 }
 
 /* writer */
 Cell& Controller::element(int x, int y) {
-    int wrapped_x = (x % get_width() + get_width()) % get_width();
-    int wrapped_y = (y % get_height() + get_height()) % get_height();
-    return m_elements->at(wrapped_x + (wrapped_y * get_width()));
+    return const_cast<Cell&>(static_cast<const Controller*>(this)->element(x, y));
 }
 
 const Cell& Controller::element_next(int x, int y) const {
-    /* to get the modulus wrapping from -ve to +ve correctly
-     * x%m is in [-m+1, m-1], so adding m to it won't change it's 
-     * modulo, but will make it guaranteed +ve */
-    int wrapped_x = (x % get_width() + get_width()) % get_width();
-    int wrapped_y = (y % get_height() + get_height()) % get_height();
-    return m_elements_alt->at(wrapped_x + (wrapped_y * get_width()));
+    return element(x, y, false);
 }
 
-/* writer */
 Cell& Controller::element_next(int x, int y) {
-    int wrapped_x = (x % get_width() + get_width()) % get_width();
-    int wrapped_y = (y % get_height() + get_height()) % get_height();
-    return m_elements_alt->at(wrapped_x + (wrapped_y * get_width()));
-}
-
-void Controller::init(void) {
-    swap(m_elements_alt, m_elements);
+    return const_cast<Cell&>(static_cast<const Controller*>(this).element_next(x, y));
 }
 
 void Controller::tick(void) {

@@ -1,4 +1,3 @@
-using namespace std;
 #include <iostream>
 #include <sstream>
 #include <cstdlib>
@@ -9,6 +8,8 @@ extern "C" {
 }
 
 #include "controller.h"
+
+using namespace std;
 
 void usage(bool do_exit) {
     cout << "Usage: conway [-w <width>] [-h <height>] [-c <steps>]" << endl;
@@ -46,7 +47,7 @@ int main(int argc, char **argv) {
         cout << e.what() << endl;
         usage(true);
     }
-    
+
     /* load a basic glider */
     controller->element(1,0) = true;
     controller->element(2,1) = true;
@@ -66,4 +67,4 @@ int main(int argc, char **argv) {
 
 }
 
-    
+

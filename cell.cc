@@ -1,8 +1,8 @@
-using namespace std;
 #include <iostream>
 
 #include "cell.h"
 
+using namespace std;
 Cell::Cell(void) :
     m_value(false) {
 }
@@ -20,10 +20,12 @@ Cell::~Cell() {
 
 Cell& Cell::operator=(const Cell& cell) {
     this->value() = cell.value();
+    return *this;
 }
 
 Cell& Cell::operator=(const bool& value) {
     this->value() = value;
+    return *this;
 }
 
 bool Cell::operator==(const Cell& cell) const {

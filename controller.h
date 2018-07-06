@@ -1,6 +1,5 @@
 #ifndef CONTROLLER_H
 #define CONTROLLER_H
-#include <tr1/memory>
 #include <stdexcept>
 #include <vector>
 
@@ -8,7 +7,7 @@
 
 class Controller {
     public:
-        typedef std::tr1::shared_ptr<Controller> Ptr;
+        typedef std::shared_ptr<Controller> Ptr;
 
         class Exception : public std::runtime_error {
             public: Exception(const char*);
@@ -35,7 +34,7 @@ class Controller {
         int m_width;
         int m_height;
         typedef std::vector<Cell> Container;
-        typedef std::tr1::shared_ptr<Container> Container_ptr;
+        typedef std::shared_ptr<Container> Container_ptr;
         Container_ptr m_elements;
         Container_ptr m_elements_alt;
         int const neighbours_alive(int x, int y) const;

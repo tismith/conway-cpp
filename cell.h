@@ -2,6 +2,8 @@
 #define _CELL_H
 #include <iostream>
 
+using namespace std;
+
 class Cell {
     public:
         Cell();

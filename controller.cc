@@ -1,7 +1,8 @@
-using namespace std;
 #include <iostream>
 
 #include "controller.h"
+
+using namespace std;
 
 Controller::Exception::Exception(const char* desc) : 
     runtime_error(desc) {
@@ -70,7 +71,7 @@ const Cell& Controller::element_next(int x, int y) const {
 }
 
 Cell& Controller::element_next(int x, int y) {
-    return const_cast<Cell&>(static_cast<const Controller*>(this).element_next(x, y));
+    return const_cast<Cell&>(static_cast<const Controller*>(this)->element_next(x, y));
 }
 
 void Controller::tick(void) {

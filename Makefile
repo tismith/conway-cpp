@@ -12,7 +12,7 @@ controller.o: controller.cc controller.h
 cell.o: cell.cc cell.h
 
 .PHONY: clean
-clean: 
-	-rm main.o cell.o controller.o conway
+clean:
+	-rm *.o conway
 
 

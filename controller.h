@@ -19,13 +19,13 @@ class Controller {
         Controller(const int width, const int height) 
             throw (BadDimensions, exception);
         virtual ~Controller();
-        const int get_width(void) const;
-        const int get_height(void) const;
+        int get_width(void) const;
+        int get_height(void) const;
         Cell& element(int x, int y);
         const Cell& element(int x, int y, bool primary_table = true) const;
 
-        void const print(void) const;
-        void const print_dimensions(void) const;
+        void print(void) const;
+        void print_dimensions(void) const;
 
         void tick(void);
         void run(void);
@@ -37,8 +37,8 @@ class Controller {
         typedef std::shared_ptr<Container> Container_ptr;
         Container_ptr m_elements;
         Container_ptr m_elements_alt;
-        int const neighbours_alive(int x, int y) const;
-        const bool apply(const Cell& cell, const int num_alive) const;
+        int neighbours_alive(int x, int y) const;
+        bool apply(const Cell& cell, const int num_alive) const;
         Cell& element_next(int x, int y);
         const Cell& element_next(int x, int y) const;
         

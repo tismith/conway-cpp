@@ -1,6 +1,7 @@
 # Makefile for conway-text
 
-CFLAGS += -Wall -Werror
+CFLAGS += -Wall -Werror -Wextra -pedantic
+CXXFLAGS += $(CFLAGS)
 
 all: conway
 
